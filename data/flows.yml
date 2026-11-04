@@ -1,0 +1,22 @@
+flows:
+  transfer_money:
+    description: Help users send money to friends and family.
+    steps:
+      - collect: recipient
+      - collect: amount
+        description: the number of US dollars to send
+      - action: utter_transfer_complete
+  submit_it_ticket:
+    description: User wants to report a tech problem or request IT help.
+    steps:
+      - collect: issue_category
+      - collect: issue_description
+      - collect: urgency
+        next:
+          - if: slots.urgency == "high"
+            then:
+              - action: utter_escalate
+              - link: pattern_human_handoff
+          - else:
+              - action: utter_ticket_summary
+                next: END
